@@ -1,1 +1,324 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> if
+Rule 1     if -> IF LPAREN exp RPAREN LBRACE stmt RBRACE
+Rule 2     if -> IF LPAREN exp RPAREN LBRACE stmt RBRACE ELSE LBRACE stmt RBRACE
+Rule 3     exp -> exp PLUS term
+Rule 4     exp -> exp MINUS term
+Rule 5     exp -> term
+Rule 6     term -> term TIMES factor
+Rule 7     term -> term DIVIDE factor
+Rule 8     term -> factor
+Rule 9     factor -> NUMBER
+Rule 10    stmt -> exp
+
+Terminals, with rules where they appear
+
+DIVIDE               : 7
+ELSE                 : 2
+IF                   : 1 2
+LBRACE               : 1 2 2
+LPAREN               : 1 2
+MINUS                : 4
+NUMBER               : 9
+PLUS                 : 3
+RBRACE               : 1 2 2
+RPAREN               : 1 2
+TIMES                : 6
+error                : 
+
+Nonterminals, with rules where they appear
+
+exp                  : 1 2 3 4 10
+factor               : 6 7 8
+if                   : 0
+stmt                 : 1 2 2
+term                 : 3 4 5 6 7
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . if
+    (1) if -> . IF LPAREN exp RPAREN LBRACE stmt RBRACE
+    (2) if -> . IF LPAREN exp RPAREN LBRACE stmt RBRACE ELSE LBRACE stmt RBRACE
+
+    IF              shift and go to state 2
+
+    if                             shift and go to state 1
+
+state 1
+
+    (0) S' -> if .
+
+
+
+state 2
+
+    (1) if -> IF . LPAREN exp RPAREN LBRACE stmt RBRACE
+    (2) if -> IF . LPAREN exp RPAREN LBRACE stmt RBRACE ELSE LBRACE stmt RBRACE
+
+    LPAREN          shift and go to state 3
+
+
+state 3
+
+    (1) if -> IF LPAREN . exp RPAREN LBRACE stmt RBRACE
+    (2) if -> IF LPAREN . exp RPAREN LBRACE stmt RBRACE ELSE LBRACE stmt RBRACE
+    (3) exp -> . exp PLUS term
+    (4) exp -> . exp MINUS term
+    (5) exp -> . term
+    (6) term -> . term TIMES factor
+    (7) term -> . term DIVIDE factor
+    (8) term -> . factor
+    (9) factor -> . NUMBER
+
+    NUMBER          shift and go to state 7
+
+    exp                            shift and go to state 4
+    term                           shift and go to state 5
+    factor                         shift and go to state 6
+
+state 4
+
+    (1) if -> IF LPAREN exp . RPAREN LBRACE stmt RBRACE
+    (2) if -> IF LPAREN exp . RPAREN LBRACE stmt RBRACE ELSE LBRACE stmt RBRACE
+    (3) exp -> exp . PLUS term
+    (4) exp -> exp . MINUS term
+
+    RPAREN          shift and go to state 8
+    PLUS            shift and go to state 9
+    MINUS           shift and go to state 10
+
+
+state 5
+
+    (5) exp -> term .
+    (6) term -> term . TIMES factor
+    (7) term -> term . DIVIDE factor
+
+    RPAREN          reduce using rule 5 (exp -> term .)
+    PLUS            reduce using rule 5 (exp -> term .)
+    MINUS           reduce using rule 5 (exp -> term .)
+    RBRACE          reduce using rule 5 (exp -> term .)
+    TIMES           shift and go to state 11
+    DIVIDE          shift and go to state 12
+
+
+state 6
+
+    (8) term -> factor .
+
+    TIMES           reduce using rule 8 (term -> factor .)
+    DIVIDE          reduce using rule 8 (term -> factor .)
+    RPAREN          reduce using rule 8 (term -> factor .)
+    PLUS            reduce using rule 8 (term -> factor .)
+    MINUS           reduce using rule 8 (term -> factor .)
+    RBRACE          reduce using rule 8 (term -> factor .)
+
+
+state 7
+
+    (9) factor -> NUMBER .
+
+    TIMES           reduce using rule 9 (factor -> NUMBER .)
+    DIVIDE          reduce using rule 9 (factor -> NUMBER .)
+    RPAREN          reduce using rule 9 (factor -> NUMBER .)
+    PLUS            reduce using rule 9 (factor -> NUMBER .)
+    MINUS           reduce using rule 9 (factor -> NUMBER .)
+    RBRACE          reduce using rule 9 (factor -> NUMBER .)
+
+
+state 8
+
+    (1) if -> IF LPAREN exp RPAREN . LBRACE stmt RBRACE
+    (2) if -> IF LPAREN exp RPAREN . LBRACE stmt RBRACE ELSE LBRACE stmt RBRACE
+
+    LBRACE          shift and go to state 13
+
+
+state 9
+
+    (3) exp -> exp PLUS . term
+    (6) term -> . term TIMES factor
+    (7) term -> . term DIVIDE factor
+    (8) term -> . factor
+    (9) factor -> . NUMBER
+
+    NUMBER          shift and go to state 7
+
+    term                           shift and go to state 14
+    factor                         shift and go to state 6
+
+state 10
+
+    (4) exp -> exp MINUS . term
+    (6) term -> . term TIMES factor
+    (7) term -> . term DIVIDE factor
+    (8) term -> . factor
+    (9) factor -> . NUMBER
+
+    NUMBER          shift and go to state 7
+
+    term                           shift and go to state 15
+    factor                         shift and go to state 6
+
+state 11
+
+    (6) term -> term TIMES . factor
+    (9) factor -> . NUMBER
+
+    NUMBER          shift and go to state 7
+
+    factor                         shift and go to state 16
+
+state 12
+
+    (7) term -> term DIVIDE . factor
+    (9) factor -> . NUMBER
+
+    NUMBER          shift and go to state 7
+
+    factor                         shift and go to state 17
+
+state 13
+
+    (1) if -> IF LPAREN exp RPAREN LBRACE . stmt RBRACE
+    (2) if -> IF LPAREN exp RPAREN LBRACE . stmt RBRACE ELSE LBRACE stmt RBRACE
+    (10) stmt -> . exp
+    (3) exp -> . exp PLUS term
+    (4) exp -> . exp MINUS term
+    (5) exp -> . term
+    (6) term -> . term TIMES factor
+    (7) term -> . term DIVIDE factor
+    (8) term -> . factor
+    (9) factor -> . NUMBER
+
+    NUMBER          shift and go to state 7
+
+    exp                            shift and go to state 18
+    stmt                           shift and go to state 19
+    term                           shift and go to state 5
+    factor                         shift and go to state 6
+
+state 14
+
+    (3) exp -> exp PLUS term .
+    (6) term -> term . TIMES factor
+    (7) term -> term . DIVIDE factor
+
+    RPAREN          reduce using rule 3 (exp -> exp PLUS term .)
+    PLUS            reduce using rule 3 (exp -> exp PLUS term .)
+    MINUS           reduce using rule 3 (exp -> exp PLUS term .)
+    RBRACE          reduce using rule 3 (exp -> exp PLUS term .)
+    TIMES           shift and go to state 11
+    DIVIDE          shift and go to state 12
+
+
+state 15
+
+    (4) exp -> exp MINUS term .
+    (6) term -> term . TIMES factor
+    (7) term -> term . DIVIDE factor
+
+    RPAREN          reduce using rule 4 (exp -> exp MINUS term .)
+    PLUS            reduce using rule 4 (exp -> exp MINUS term .)
+    MINUS           reduce using rule 4 (exp -> exp MINUS term .)
+    RBRACE          reduce using rule 4 (exp -> exp MINUS term .)
+    TIMES           shift and go to state 11
+    DIVIDE          shift and go to state 12
+
+
+state 16
+
+    (6) term -> term TIMES factor .
+
+    TIMES           reduce using rule 6 (term -> term TIMES factor .)
+    DIVIDE          reduce using rule 6 (term -> term TIMES factor .)
+    RPAREN          reduce using rule 6 (term -> term TIMES factor .)
+    PLUS            reduce using rule 6 (term -> term TIMES factor .)
+    MINUS           reduce using rule 6 (term -> term TIMES factor .)
+    RBRACE          reduce using rule 6 (term -> term TIMES factor .)
+
+
+state 17
+
+    (7) term -> term DIVIDE factor .
+
+    TIMES           reduce using rule 7 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 7 (term -> term DIVIDE factor .)
+    RPAREN          reduce using rule 7 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 7 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 7 (term -> term DIVIDE factor .)
+    RBRACE          reduce using rule 7 (term -> term DIVIDE factor .)
+
+
+state 18
+
+    (10) stmt -> exp .
+    (3) exp -> exp . PLUS term
+    (4) exp -> exp . MINUS term
+
+    RBRACE          reduce using rule 10 (stmt -> exp .)
+    PLUS            shift and go to state 9
+    MINUS           shift and go to state 10
+
+
+state 19
+
+    (1) if -> IF LPAREN exp RPAREN LBRACE stmt . RBRACE
+    (2) if -> IF LPAREN exp RPAREN LBRACE stmt . RBRACE ELSE LBRACE stmt RBRACE
+
+    RBRACE          shift and go to state 20
+
+
+state 20
+
+    (1) if -> IF LPAREN exp RPAREN LBRACE stmt RBRACE .
+    (2) if -> IF LPAREN exp RPAREN LBRACE stmt RBRACE . ELSE LBRACE stmt RBRACE
+
+    $end            reduce using rule 1 (if -> IF LPAREN exp RPAREN LBRACE stmt RBRACE .)
+    ELSE            shift and go to state 21
+
+
+state 21
+
+    (2) if -> IF LPAREN exp RPAREN LBRACE stmt RBRACE ELSE . LBRACE stmt RBRACE
+
+    LBRACE          shift and go to state 22
+
+
+state 22
+
+    (2) if -> IF LPAREN exp RPAREN LBRACE stmt RBRACE ELSE LBRACE . stmt RBRACE
+    (10) stmt -> . exp
+    (3) exp -> . exp PLUS term
+    (4) exp -> . exp MINUS term
+    (5) exp -> . term
+    (6) term -> . term TIMES factor
+    (7) term -> . term DIVIDE factor
+    (8) term -> . factor
+    (9) factor -> . NUMBER
+
+    NUMBER          shift and go to state 7
+
+    exp                            shift and go to state 18
+    stmt                           shift and go to state 23
+    term                           shift and go to state 5
+    factor                         shift and go to state 6
+
+state 23
+
+    (2) if -> IF LPAREN exp RPAREN LBRACE stmt RBRACE ELSE LBRACE stmt . RBRACE
+
+    RBRACE          shift and go to state 24
+
+
+state 24
+
+    (2) if -> IF LPAREN exp RPAREN LBRACE stmt RBRACE ELSE LBRACE stmt RBRACE .
+
+    $end            reduce using rule 2 (if -> IF LPAREN exp RPAREN LBRACE stmt RBRACE ELSE LBRACE stmt RBRACE .)
+
