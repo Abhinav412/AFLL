@@ -7,25 +7,36 @@ import sys
 start = 'if'
 #defining the grammar rules for the start symbol
 def p_if(p):
-    '''if : IF LPAREN exp RPAREN LBRACE stmt RBRACE| IF LPAREN exp RPAREN LBRACE stmt RBRACE ELSE LBRACE stmt RBRACE'''
+    '''if : IF LPAREN exp RPAREN LBRACE stmt RBRACE
+          | IF LPAREN exp RPAREN LBRACE stmt RBRACE ELSE LBRACE stmt RBRACE'''
     if len(p) == 8:
         p[0] = ("if", p[3], p[6])
         print("Syntax validation successful")
-    else:
+    elif len(p) == 12:
         p[0] = ("if", p[3], p[6], p[10])
         print("Syntax validation successful")
 #defining the grammar rules for the expression
 def p_exp(p):
-    '''exp : exp PLUS term | exp MINUS term | term'''
+    '''exp : exp PLUS term
+           | exp MINUS term
+           | term'''
     if len(p) == 4:
-        p[0] = (p[2], p[1], p[3])
+        if p[2] == '+':
+            p[0] = p[1] + p[3]
+        elif p[2] == '-':
+            p[0] = p[1] - p[3]
     else:
         p[0] = p[1]
-#defining the grammar rules for the term
+
 def p_term(p):
-    '''term : term TIMES factor | term DIVIDE factor | factor'''
+    '''term : term TIMES factor
+            | term DIVIDE factor
+            | factor'''
     if len(p) == 4:
-        p[0] = (p[2], p[1], p[3])
+        if p[2] == '*':
+            p[0] = p[1] * p[3]
+        elif p[2] == '/':
+            p[0] = p[1] / p[3]
     else:
         p[0] = p[1]
 #defining the grammar rules for the factor
@@ -38,7 +49,7 @@ def p_stmt(p):
     p[0] = p[1]
 #defining the error rule
 def p_error(p):
-    print("Syntax error in input!")
+    print("Syntax error at '%s'" % p.value)
 #building the parser
 parser = yacc.yacc()
 #reading the input from the file
