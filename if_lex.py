@@ -1,6 +1,6 @@
-import ply.lex as lex
-
-# List of token names
+#code for lexer for syntax validation of if statement in python using ply tool
+import sys
+#defining the tokens
 tokens = (
     'IF',
     'ELSE',
@@ -8,44 +8,51 @@ tokens = (
     'RPAREN',
     'LBRACE',
     'RBRACE',
+    'NUMBER',
     'PLUS',
     'MINUS',
-    'NUMBER',
-    'NAME',
+    'TIMES',
+    'DIVIDE'
 )
-
-# Regular expression rules for simple tokens
-t_IF    = r'if'
-t_ELSE  = r'else'
-t_LPAREN  = r'\('
-t_RPAREN  = r'\)'
-t_LBRACE  = r'\{'
-t_RBRACE  = r'\}'
-t_PLUS    = r'\+'
-t_MINUS   = r'-'
-
-# A regular expression rule with some action code
+#defining the regular expressions for the tokens
+t_IF = r'if'
+t_ELSE = r'else'
+t_LPAREN = r'\('
+t_RPAREN = r'\)'
+t_LBRACE = r'\{'
+t_RBRACE = r'\}'
+t_PLUS = r'\+'
+t_MINUS = r'-'
+t_TIMES = r'\*'
+t_DIVIDE = r'/'
+#ignoring the spaces
+t_ignore = ' \t'
+#defining the rule for NUMBER token
 def t_NUMBER(t):
     r'\d+'
-    t.value = int(t.value)    
+    t.value = int(t.value)
     return t
-
-def t_NAME(t):
-    r'[a-zA-Z_][a-zA-Z_0-9]*'
-    return t
-
-# Define a rule so we can track line numbers
+#defining the rule for new line
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
-
-# A string containing ignored characters (spaces and tabs)
-t_ignore  = ' \t'
-
-# Error handling rule
+#defining the rule for error handling
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
-
-# Build the lexer
+#building the lexer
+import ply.lex as lex
 lexer = lex.lex()
+#reading the input from the file
+file = open(sys.argv[0], "r")
+data = file.read()
+#tokenizing the input
+lexer.input(data)
+#closing the file
+file.close()
+#iterating over the tokens
+while True:
+    tok = lexer.token()
+    if not tok:
+        break
+    print(tok)
