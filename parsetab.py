@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ifDIVIDE ELSE IF LBRACE LPAREN MINUS NUMBER PLUS RBRACE RPAREN TIMESif : IF LPAREN exp RPAREN LBRACE stmt RBRACE\n          | IF LPAREN exp RPAREN LBRACE stmt RBRACE ELSE LBRACE stmt RBRACEexp : exp PLUS term\n           | exp MINUS term\n           | termterm : term TIMES factor\n            | term DIVIDE factor\n            | factorfactor : NUMBERstmt : exp'
+_lr_signature = 'AND COLON DEDENT DIVIDE ELIF ELSE EQ EQUALS GE GT IF INDENT LE LPAREN LT MINUS NAME NEQ NEWLINE NOT NUMBER OR PLUS RPAREN TIMESstatement : IF expression COLON NEWLINE INDENT statements DEDENTstatement : ELIF expression COLON NEWLINE INDENT statements DEDENTstatement : ELSE COLON NEWLINE INDENT statements DEDENTstatements : statement\n                  | statement statements\n                  | emptyempty :expression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expression\n                  | expression AND expression\n                  | expression OR expression\n                  | NOT expression\n                  | expression EQ expression\n                  | expression NEQ expression\n                  | expression LT expression\n                  | expression GT expression\n                  | expression LE expression\n                  | expression GE expression\n                  | NAME\n                  | NUMBER\n                  | LPAREN expression RPAREN'
     
-_lr_action_items = {'IF':([0,],[2,]),'$end':([1,20,24,],[0,-1,-2,]),'LPAREN':([2,],[3,]),'NUMBER':([3,9,10,11,12,13,22,],[7,7,7,7,7,7,7,]),'RPAREN':([4,5,6,7,14,15,16,17,],[8,-5,-8,-9,-3,-4,-6,-7,]),'PLUS':([4,5,6,7,14,15,16,17,18,],[9,-5,-8,-9,-3,-4,-6,-7,9,]),'MINUS':([4,5,6,7,14,15,16,17,18,],[10,-5,-8,-9,-3,-4,-6,-7,10,]),'RBRACE':([5,6,7,14,15,16,17,18,19,23,],[-5,-8,-9,-3,-4,-6,-7,-10,20,24,]),'TIMES':([5,6,7,14,15,16,17,],[11,-8,-9,11,11,-6,-7,]),'DIVIDE':([5,6,7,14,15,16,17,],[12,-8,-9,12,12,-6,-7,]),'LBRACE':([8,21,],[13,22,]),'ELSE':([20,],[21,]),}
+_lr_action_items = {'IF':([0,44,45,46,48,52,54,55,],[2,2,2,2,2,-3,-1,-2,]),'ELIF':([0,44,45,46,48,52,54,55,],[3,3,3,3,3,-3,-1,-2,]),'ELSE':([0,44,45,46,48,52,54,55,],[4,4,4,4,4,-3,-1,-2,]),'$end':([1,52,54,55,],[0,-3,-1,-2,]),'NOT':([2,3,6,9,13,14,15,16,17,18,19,20,21,22,23,24,],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,]),'NAME':([2,3,6,9,13,14,15,16,17,18,19,20,21,22,23,24,],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,]),'NUMBER':([2,3,6,9,13,14,15,16,17,18,19,20,21,22,23,24,],[8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,]),'LPAREN':([2,3,6,9,13,14,15,16,17,18,19,20,21,22,23,24,],[9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,]),'COLON':([4,5,7,8,10,25,30,31,32,33,34,35,36,37,38,39,40,41,42,],[11,12,-21,-22,27,-14,-8,-9,-10,-11,-12,-13,-15,-16,-17,-18,-19,-20,-23,]),'PLUS':([5,7,8,10,25,26,30,31,32,33,34,35,36,37,38,39,40,41,42,],[13,-21,-22,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,-23,]),'MINUS':([5,7,8,10,25,26,30,31,32,33,34,35,36,37,38,39,40,41,42,],[14,-21,-22,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,-23,]),'TIMES':([5,7,8,10,25,26,30,31,32,33,34,35,36,37,38,39,40,41,42,],[15,-21,-22,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,-23,]),'DIVIDE':([5,7,8,10,25,26,30,31,32,33,34,35,36,37,38,39,40,41,42,],[16,-21,-22,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,-23,]),'AND':([5,7,8,10,25,26,30,31,32,33,34,35,36,37,38,39,40,41,42,],[17,-21,-22,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,-23,]),'OR':([5,7,8,10,25,26,30,31,32,33,34,35,36,37,38,39,40,41,42,],[18,-21,-22,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,-23,]),'EQ':([5,7,8,10,25,26,30,31,32,33,34,35,36,37,38,39,40,41,42,],[19,-21,-22,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,-23,]),'NEQ':([5,7,8,10,25,26,30,31,32,33,34,35,36,37,38,39,40,41,42,],[20,-21,-22,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,-23,]),'LT':([5,7,8,10,25,26,30,31,32,33,34,35,36,37,38,39,40,41,42,],[21,-21,-22,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,-23,]),'GT':([5,7,8,10,25,26,30,31,32,33,34,35,36,37,38,39,40,41,42,],[22,-21,-22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,-23,]),'LE':([5,7,8,10,25,26,30,31,32,33,34,35,36,37,38,39,40,41,42,],[23,-21,-22,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,-23,]),'GE':([5,7,8,10,25,26,30,31,32,33,34,35,36,37,38,39,40,41,42,],[24,-21,-22,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,-23,]),'RPAREN':([7,8,25,26,30,31,32,33,34,35,36,37,38,39,40,41,42,],[-21,-22,-14,42,-8,-9,-10,-11,-12,-13,-15,-16,-17,-18,-19,-20,-23,]),'NEWLINE':([11,12,27,],[28,29,43,]),'INDENT':([28,29,43,],[44,45,46,]),'DEDENT':([44,45,46,47,48,49,50,51,52,53,54,55,],[-7,-7,-7,52,-4,-6,54,55,-3,-5,-1,-2,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'if':([0,],[1,]),'exp':([3,13,22,],[4,18,18,]),'term':([3,9,10,13,22,],[5,14,15,5,5,]),'factor':([3,9,10,11,12,13,22,],[6,6,6,16,17,6,6,]),'stmt':([13,22,],[19,23,]),}
+_lr_goto_items = {'statement':([0,44,45,46,48,],[1,48,48,48,48,]),'expression':([2,3,6,9,13,14,15,16,17,18,19,20,21,22,23,24,],[5,10,25,26,30,31,32,33,34,35,36,37,38,39,40,41,]),'statements':([44,45,46,48,],[47,50,51,53,]),'empty':([44,45,46,48,],[49,49,49,49,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,15 +26,28 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> if","S'",1,None,None,None),
-  ('if -> IF LPAREN exp RPAREN LBRACE stmt RBRACE','if',7,'p_if','if.py',10),
-  ('if -> IF LPAREN exp RPAREN LBRACE stmt RBRACE ELSE LBRACE stmt RBRACE','if',11,'p_if','if.py',11),
-  ('exp -> exp PLUS term','exp',3,'p_exp','if.py',20),
-  ('exp -> exp MINUS term','exp',3,'p_exp','if.py',21),
-  ('exp -> term','exp',1,'p_exp','if.py',22),
-  ('term -> term TIMES factor','term',3,'p_term','if.py',32),
-  ('term -> term DIVIDE factor','term',3,'p_term','if.py',33),
-  ('term -> factor','term',1,'p_term','if.py',34),
-  ('factor -> NUMBER','factor',1,'p_factor','if.py',44),
-  ('stmt -> exp','stmt',1,'p_stmt','if.py',48),
+  ("S' -> statement","S'",1,None,None,None),
+  ('statement -> IF expression COLON NEWLINE INDENT statements DEDENT','statement',7,'p_statement_if','if.py',36),
+  ('statement -> ELIF expression COLON NEWLINE INDENT statements DEDENT','statement',7,'p_statement_elif','if.py',39),
+  ('statement -> ELSE COLON NEWLINE INDENT statements DEDENT','statement',6,'p_statement_else','if.py',42),
+  ('statements -> statement','statements',1,'p_statements','if.py',47),
+  ('statements -> statement statements','statements',2,'p_statements','if.py',48),
+  ('statements -> empty','statements',1,'p_statements','if.py',49),
+  ('empty -> <empty>','empty',0,'p_empty','if.py',52),
+  ('expression -> expression PLUS expression','expression',3,'p_expression','if.py',56),
+  ('expression -> expression MINUS expression','expression',3,'p_expression','if.py',57),
+  ('expression -> expression TIMES expression','expression',3,'p_expression','if.py',58),
+  ('expression -> expression DIVIDE expression','expression',3,'p_expression','if.py',59),
+  ('expression -> expression AND expression','expression',3,'p_expression','if.py',60),
+  ('expression -> expression OR expression','expression',3,'p_expression','if.py',61),
+  ('expression -> NOT expression','expression',2,'p_expression','if.py',62),
+  ('expression -> expression EQ expression','expression',3,'p_expression','if.py',63),
+  ('expression -> expression NEQ expression','expression',3,'p_expression','if.py',64),
+  ('expression -> expression LT expression','expression',3,'p_expression','if.py',65),
+  ('expression -> expression GT expression','expression',3,'p_expression','if.py',66),
+  ('expression -> expression LE expression','expression',3,'p_expression','if.py',67),
+  ('expression -> expression GE expression','expression',3,'p_expression','if.py',68),
+  ('expression -> NAME','expression',1,'p_expression','if.py',69),
+  ('expression -> NUMBER','expression',1,'p_expression','if.py',70),
+  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression','if.py',71),
 ]
