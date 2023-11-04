@@ -1,94 +1,63 @@
 import ply.lex as lex
-import ply.yacc as yacc
 
-# List of token names
-tokens = ('IF', 'ELIF', 'ELSE', 'COLON', 'INDENT', 'DEDENT', 'NAME', 'EQUALS', 'NUMBER', 'LPAREN', 'RPAREN', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'LT', 'GT', 'EQ', 'NEQ', 'LE', 'GE', 'AND', 'OR', 'NOT', 'NEWLINE')
+reserved = {
+    'if' : 'IF'
+}
+tokens = ('IF', 'ID', 'EQ', 'INT', 'COLON', 'INDENT', 'DEDENT','ASSIGN')
 
-# Regular expression rules for simple tokens
 t_IF = r'if'
-t_ELIF = r'elif'
-t_ELSE = r'else'
-t_COLON = r':'
-t_INDENT = r'\t'
-t_DEDENT = r'\n'
-t_NAME = r'[a-zA-Z_][a-zA-Z0-9_]*'
-t_EQUALS = r'='
-t_NUMBER = r'\d+'
-t_LPAREN = r'\('
-t_RPAREN = r'\)'
-t_PLUS = r'\+'
-t_MINUS = r'-'
-t_TIMES = r'\*'
-t_DIVIDE = r'/'
-t_LT = r'<'
-t_GT = r'>'
 t_EQ = r'=='
-t_NEQ = r'!='
-t_LE = r'<='
-t_GE = r'>='
-t_AND = r'and'
-t_OR = r'or'
-t_NOT = r'not'
-t_NEWLINE = r'\n'
+t_COLON = r':'
+t_ASSIGN = r'='
+t_INDENT = r'\n[ \t]+'
+t_DEDENT = r'\n[ \t]*'
 
-# Parsing rules
-def p_statement_if(p):
-    'statement : IF expression COLON NEWLINE INDENT statements DEDENT'
+def t_ID(t):
+    r'[a-zA-Z_][a-zA-Z0-9_]*'
+    t.type = reserved.get(t.value,'ID')    # Check for reserved words
+    return t
 
-def p_statement_elif(p):
-    'statement : ELIF expression COLON NEWLINE INDENT statements DEDENT'
+def t_INT(t):
+    r'\d+'
+    return t
 
-def p_statement_else(p):
-    'statement : ELSE COLON NEWLINE INDENT statements DEDENT'
+t_ignore = ' \t'
 
-# Parsing rules
-# Parsing rules
-def p_statements(p):
-    '''statements : statement
-                  | statement statements
-                  | empty'''
-
-def p_empty(p):
-    'empty :'
-    pass
-
-def p_expression(p):
-    '''expression : expression PLUS expression
-                  | expression MINUS expression
-                  | expression TIMES expression
-                  | expression DIVIDE expression
-                  | expression AND expression
-                  | expression OR expression
-                  | NOT expression
-                  | expression EQ expression
-                  | expression NEQ expression
-                  | expression LT expression
-                  | expression GT expression
-                  | expression LE expression
-                  | expression GE expression
-                  | NAME
-                  | NUMBER
-                  | LPAREN expression RPAREN'''
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
 
 def t_error(t):
     print(f"Illegal character '{t.value[0]}'")
     t.lexer.skip(1)
 
-def p_error(p):
-    if p:
-        print(f"Syntax error at '{p.value}'")
-    else:
-        print("Syntax error at EOF")
-
-# Build the lexer and parser
 lexer = lex.lex()
+
+def lex_analyse(text):
+    lexer.input(text)
+
+    while True:
+        token = lexer.token()
+        if not token:
+            break
+        print(token)
+
+text=input()
+lex_analyse(text)
+
+import ply.yacc as yacc
+
+def p_statement_if(p):
+    'statement : IF ID EQ INT COLON ID ASSIGN INT'
+    p[0] = ('if', p[2], p[4], p[6], p[8])
+
+def p_error(p):
+    print(f"Syntax error at '{p.value}'")
+
 parser = yacc.yacc()
 
-while True:
-    try:
-        s = input('Enter a Python if statement > ')
-    except EOFError:
-        break
-    if not s: continue
-    result = parser.parse(s)
+def parse(input):
+    result = parser.parse(input, lexer=lexer)
     print(result)
+
+parse(text)
