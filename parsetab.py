@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ASSIGN COLON DEDENT EQ ID IF INDENT INTstatement : IF ID EQ INT COLON ID ASSIGN INT'
+_lr_signature = 'ASSIGN COLON DEDENT ELSE EQ ID IF INDENT INTstatement : IF ID EQ INT COLON ID ASSIGN INTstatement : IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT'
     
-_lr_action_items = {'IF':([0,],[2,]),'$end':([1,9,],[0,-1,]),'ID':([2,6,],[3,7,]),'EQ':([3,],[4,]),'INT':([4,8,],[5,9,]),'COLON':([5,],[6,]),'ASSIGN':([7,],[8,]),}
+_lr_action_items = {'IF':([0,],[2,]),'$end':([1,9,14,],[0,-1,-2,]),'ID':([2,6,11,],[3,7,12,]),'EQ':([3,],[4,]),'INT':([4,8,13,],[5,9,14,]),'COLON':([5,10,],[6,11,]),'ASSIGN':([7,12,],[8,13,]),'ELSE':([9,],[10,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -27,5 +27,6 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
-  ('statement -> IF ID EQ INT COLON ID ASSIGN INT','statement',8,'p_statement_if','if.py',49),
+  ('statement -> IF ID EQ INT COLON ID ASSIGN INT','statement',8,'p_statement_if','if-else.py',53),
+  ('statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT','statement',13,'p_statement_if_else','if-else.py',57),
 ]
