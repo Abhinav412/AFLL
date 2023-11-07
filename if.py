@@ -51,13 +51,23 @@ def p_statement_if(p):
     'statement : IF ID EQ INT COLON ID ASSIGN INT'
     p[0] = ('if', p[2], p[4], p[6], p[8])
 
+syntax_error = False
+
 def p_error(p):
+    global syntax_error
+    syntax_error = True
     print(f"Syntax error at '{p.value}'")
 
 parser = yacc.yacc()
 
 def parse(input):
+    global syntax_error
+    syntax_error = False
     result = parser.parse(input, lexer=lexer)
+    if syntax_error:
+        print("Incorrect Syntax")
+    else:
+        print("Correct Syntax")
     print(result)
 
 parse(text)
