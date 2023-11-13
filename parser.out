@@ -1,147 +1,126 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    DEDENT
-    INDENT
-
 Grammar
 
-Rule 0     S' -> statement
-Rule 1     statement -> IF ID EQ INT COLON ID ASSIGN INT
-Rule 2     statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT
+Rule 0     S' -> function
+Rule 1     function -> DEF ID LPAREN parameter_list RPAREN COLON
+Rule 2     parameter_list -> parameter_list COMMA ID
+Rule 3     parameter_list -> ID
+Rule 4     parameter_list -> empty
+Rule 5     empty -> <empty>
 
 Terminals, with rules where they appear
 
-ASSIGN               : 1 2 2
-COLON                : 1 2 2
-DEDENT               : 
-ELSE                 : 2
-EQ                   : 1 2
-ID                   : 1 1 2 2 2
-IF                   : 1 2
-INDENT               : 
-INT                  : 1 1 2 2 2
+COLON                : 1
+COMMA                : 2
+DEF                  : 1
+ID                   : 1 2 3
+LPAREN               : 1
+RPAREN               : 1
 error                : 
 
 Nonterminals, with rules where they appear
 
-statement            : 0
+empty                : 4
+function             : 0
+parameter_list       : 1 2
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . statement
-    (1) statement -> . IF ID EQ INT COLON ID ASSIGN INT
-    (2) statement -> . IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT
+    (0) S' -> . function
+    (1) function -> . DEF ID LPAREN parameter_list RPAREN COLON
 
-    IF              shift and go to state 2
+    DEF             shift and go to state 2
 
-    statement                      shift and go to state 1
+    function                       shift and go to state 1
 
 state 1
 
-    (0) S' -> statement .
+    (0) S' -> function .
 
 
 
 state 2
 
-    (1) statement -> IF . ID EQ INT COLON ID ASSIGN INT
-    (2) statement -> IF . ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT
+    (1) function -> DEF . ID LPAREN parameter_list RPAREN COLON
 
     ID              shift and go to state 3
 
 
 state 3
 
-    (1) statement -> IF ID . EQ INT COLON ID ASSIGN INT
-    (2) statement -> IF ID . EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT
+    (1) function -> DEF ID . LPAREN parameter_list RPAREN COLON
 
-    EQ              shift and go to state 4
+    LPAREN          shift and go to state 4
 
 
 state 4
 
-    (1) statement -> IF ID EQ . INT COLON ID ASSIGN INT
-    (2) statement -> IF ID EQ . INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT
+    (1) function -> DEF ID LPAREN . parameter_list RPAREN COLON
+    (2) parameter_list -> . parameter_list COMMA ID
+    (3) parameter_list -> . ID
+    (4) parameter_list -> . empty
+    (5) empty -> .
 
-    INT             shift and go to state 5
+    ID              shift and go to state 5
+    RPAREN          reduce using rule 5 (empty -> .)
+    COMMA           reduce using rule 5 (empty -> .)
 
+    parameter_list                 shift and go to state 6
+    empty                          shift and go to state 7
 
 state 5
 
-    (1) statement -> IF ID EQ INT . COLON ID ASSIGN INT
-    (2) statement -> IF ID EQ INT . COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT
+    (3) parameter_list -> ID .
 
-    COLON           shift and go to state 6
+    RPAREN          reduce using rule 3 (parameter_list -> ID .)
+    COMMA           reduce using rule 3 (parameter_list -> ID .)
 
 
 state 6
 
-    (1) statement -> IF ID EQ INT COLON . ID ASSIGN INT
-    (2) statement -> IF ID EQ INT COLON . ID ASSIGN INT ELSE COLON ID ASSIGN INT
+    (1) function -> DEF ID LPAREN parameter_list . RPAREN COLON
+    (2) parameter_list -> parameter_list . COMMA ID
 
-    ID              shift and go to state 7
+    RPAREN          shift and go to state 8
+    COMMA           shift and go to state 9
 
 
 state 7
 
-    (1) statement -> IF ID EQ INT COLON ID . ASSIGN INT
-    (2) statement -> IF ID EQ INT COLON ID . ASSIGN INT ELSE COLON ID ASSIGN INT
+    (4) parameter_list -> empty .
 
-    ASSIGN          shift and go to state 8
+    RPAREN          reduce using rule 4 (parameter_list -> empty .)
+    COMMA           reduce using rule 4 (parameter_list -> empty .)
 
 
 state 8
 
-    (1) statement -> IF ID EQ INT COLON ID ASSIGN . INT
-    (2) statement -> IF ID EQ INT COLON ID ASSIGN . INT ELSE COLON ID ASSIGN INT
+    (1) function -> DEF ID LPAREN parameter_list RPAREN . COLON
 
-    INT             shift and go to state 9
+    COLON           shift and go to state 10
 
 
 state 9
 
-    (1) statement -> IF ID EQ INT COLON ID ASSIGN INT .
-    (2) statement -> IF ID EQ INT COLON ID ASSIGN INT . ELSE COLON ID ASSIGN INT
+    (2) parameter_list -> parameter_list COMMA . ID
 
-    $end            reduce using rule 1 (statement -> IF ID EQ INT COLON ID ASSIGN INT .)
-    ELSE            shift and go to state 10
+    ID              shift and go to state 11
 
 
 state 10
 
-    (2) statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE . COLON ID ASSIGN INT
+    (1) function -> DEF ID LPAREN parameter_list RPAREN COLON .
 
-    COLON           shift and go to state 11
+    $end            reduce using rule 1 (function -> DEF ID LPAREN parameter_list RPAREN COLON .)
 
 
 state 11
 
-    (2) statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE COLON . ID ASSIGN INT
+    (2) parameter_list -> parameter_list COMMA ID .
 
-    ID              shift and go to state 12
-
-
-state 12
-
-    (2) statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID . ASSIGN INT
-
-    ASSIGN          shift and go to state 13
-
-
-state 13
-
-    (2) statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN . INT
-
-    INT             shift and go to state 14
-
-
-state 14
-
-    (2) statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT .
-
-    $end            reduce using rule 2 (statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT .)
+    RPAREN          reduce using rule 2 (parameter_list -> parameter_list COMMA ID .)
+    COMMA           reduce using rule 2 (parameter_list -> parameter_list COMMA ID .)
 
