@@ -9,8 +9,6 @@ t_IF = r'if'
 t_EQ = r'=='
 t_COLON = r':'
 t_ASSIGN = r'='
-t_INDENT = r'\n[ \t]+'
-t_DEDENT = r'\n[ \t]*'
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
@@ -40,7 +38,6 @@ def lex_analyse(text):
         token = lexer.token()
         if not token:
             break
-        print(token)
 
 text=input()
 lex_analyse(text)
