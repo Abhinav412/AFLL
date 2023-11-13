@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'COLON COMMA DEF ID LPAREN RPARENfunction : DEF ID LPAREN parameter_list RPAREN COLON\n    parameter_list : parameter_list COMMA ID\n                   | ID\n                   | empty\n    empty :'
+_lr_signature = 'COLON EQ GT ID LT N NUMBER WHILEwhile_loop : WHILE ID LT NUMBER COLON\n                  | WHILE ID LT N COLON\n                  | WHILE ID GT NUMBER COLON\n                  | WHILE ID GT N COLON\n                  | WHILE ID EQ NUMBER COLON\n                  | WHILE ID EQ N COLON\n                  | WHILE NUMBER GT ID COLON\n                  | WHILE NUMBER LT ID COLON'
     
-_lr_action_items = {'DEF':([0,],[2,]),'$end':([1,10,],[0,-1,]),'ID':([2,4,9,],[3,5,11,]),'LPAREN':([3,],[4,]),'RPAREN':([4,5,6,7,11,],[-5,-3,8,-4,-2,]),'COMMA':([4,5,6,7,11,],[-5,-3,9,-4,-2,]),'COLON':([8,],[10,]),}
+_lr_action_items = {'WHILE':([0,],[2,]),'$end':([1,18,19,20,21,22,23,24,25,],[0,-1,-2,-3,-4,-5,-6,-7,-8,]),'ID':([2,8,9,],[3,16,17,]),'NUMBER':([2,5,6,7,],[4,10,12,14,]),'LT':([3,4,],[5,9,]),'GT':([3,4,],[6,8,]),'EQ':([3,],[7,]),'N':([5,6,7,],[11,13,15,]),'COLON':([10,11,12,13,14,15,16,17,],[18,19,20,21,22,23,24,25,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'function':([0,],[1,]),'parameter_list':([4,],[6,]),'empty':([4,],[7,]),}
+_lr_goto_items = {'while_loop':([0,],[1,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,10 +26,13 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> function","S'",1,None,None,None),
-  ('function -> DEF ID LPAREN parameter_list RPAREN COLON','function',6,'p_function_definition','func-def.py',47),
-  ('parameter_list -> parameter_list COMMA ID','parameter_list',3,'p_parameter_list','func-def.py',52),
-  ('parameter_list -> ID','parameter_list',1,'p_parameter_list','func-def.py',53),
-  ('parameter_list -> empty','parameter_list',1,'p_parameter_list','func-def.py',54),
-  ('empty -> <empty>','empty',0,'p_empty','func-def.py',58),
+  ("S' -> while_loop","S'",1,None,None,None),
+  ('while_loop -> WHILE ID LT NUMBER COLON','while_loop',5,'p_while_loop','while.py',43),
+  ('while_loop -> WHILE ID LT N COLON','while_loop',5,'p_while_loop','while.py',44),
+  ('while_loop -> WHILE ID GT NUMBER COLON','while_loop',5,'p_while_loop','while.py',45),
+  ('while_loop -> WHILE ID GT N COLON','while_loop',5,'p_while_loop','while.py',46),
+  ('while_loop -> WHILE ID EQ NUMBER COLON','while_loop',5,'p_while_loop','while.py',47),
+  ('while_loop -> WHILE ID EQ N COLON','while_loop',5,'p_while_loop','while.py',48),
+  ('while_loop -> WHILE NUMBER GT ID COLON','while_loop',5,'p_while_loop','while.py',49),
+  ('while_loop -> WHILE NUMBER LT ID COLON','while_loop',5,'p_while_loop','while.py',50),
 ]
