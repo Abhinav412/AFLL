@@ -9,17 +9,19 @@ Grammar
 
 Rule 0     S' -> statement
 Rule 1     statement -> IF ID EQ INT COLON ID ASSIGN INT
+Rule 2     statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT
 
 Terminals, with rules where they appear
 
-ASSIGN               : 1
-COLON                : 1
+ASSIGN               : 1 2 2
+COLON                : 1 2 2
 DEDENT               : 
-EQ                   : 1
-ID                   : 1 1
-IF                   : 1
+ELSE                 : 2
+EQ                   : 1 2
+ID                   : 1 1 2 2 2
+IF                   : 1 2
 INDENT               : 
-INT                  : 1 1
+INT                  : 1 1 2 2 2
 error                : 
 
 Nonterminals, with rules where they appear
@@ -32,6 +34,7 @@ state 0
 
     (0) S' -> . statement
     (1) statement -> . IF ID EQ INT COLON ID ASSIGN INT
+    (2) statement -> . IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT
 
     IF              shift and go to state 2
 
@@ -46,6 +49,7 @@ state 1
 state 2
 
     (1) statement -> IF . ID EQ INT COLON ID ASSIGN INT
+    (2) statement -> IF . ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT
 
     ID              shift and go to state 3
 
@@ -53,6 +57,7 @@ state 2
 state 3
 
     (1) statement -> IF ID . EQ INT COLON ID ASSIGN INT
+    (2) statement -> IF ID . EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT
 
     EQ              shift and go to state 4
 
@@ -60,6 +65,7 @@ state 3
 state 4
 
     (1) statement -> IF ID EQ . INT COLON ID ASSIGN INT
+    (2) statement -> IF ID EQ . INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT
 
     INT             shift and go to state 5
 
@@ -67,6 +73,7 @@ state 4
 state 5
 
     (1) statement -> IF ID EQ INT . COLON ID ASSIGN INT
+    (2) statement -> IF ID EQ INT . COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT
 
     COLON           shift and go to state 6
 
@@ -74,6 +81,7 @@ state 5
 state 6
 
     (1) statement -> IF ID EQ INT COLON . ID ASSIGN INT
+    (2) statement -> IF ID EQ INT COLON . ID ASSIGN INT ELSE COLON ID ASSIGN INT
 
     ID              shift and go to state 7
 
@@ -81,6 +89,7 @@ state 6
 state 7
 
     (1) statement -> IF ID EQ INT COLON ID . ASSIGN INT
+    (2) statement -> IF ID EQ INT COLON ID . ASSIGN INT ELSE COLON ID ASSIGN INT
 
     ASSIGN          shift and go to state 8
 
@@ -88,6 +97,7 @@ state 7
 state 8
 
     (1) statement -> IF ID EQ INT COLON ID ASSIGN . INT
+    (2) statement -> IF ID EQ INT COLON ID ASSIGN . INT ELSE COLON ID ASSIGN INT
 
     INT             shift and go to state 9
 
@@ -95,6 +105,43 @@ state 8
 state 9
 
     (1) statement -> IF ID EQ INT COLON ID ASSIGN INT .
+    (2) statement -> IF ID EQ INT COLON ID ASSIGN INT . ELSE COLON ID ASSIGN INT
 
     $end            reduce using rule 1 (statement -> IF ID EQ INT COLON ID ASSIGN INT .)
+    ELSE            shift and go to state 10
+
+
+state 10
+
+    (2) statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE . COLON ID ASSIGN INT
+
+    COLON           shift and go to state 11
+
+
+state 11
+
+    (2) statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE COLON . ID ASSIGN INT
+
+    ID              shift and go to state 12
+
+
+state 12
+
+    (2) statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID . ASSIGN INT
+
+    ASSIGN          shift and go to state 13
+
+
+state 13
+
+    (2) statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN . INT
+
+    INT             shift and go to state 14
+
+
+state 14
+
+    (2) statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT .
+
+    $end            reduce using rule 2 (statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT .)
 
