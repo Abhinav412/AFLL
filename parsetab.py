@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ASSIGN COLON DEDENT ELSE EQ ID IF INDENT INTstatement : IF ID EQ INT COLON ID ASSIGN INTstatement : IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT'
+_lr_signature = 'COLON COMMA DEF ID LPAREN RPARENfunction : DEF ID LPAREN parameter_list RPAREN COLON\n    parameter_list : parameter_list COMMA ID\n                   | ID\n                   | empty\n    empty :'
     
-_lr_action_items = {'IF':([0,],[2,]),'$end':([1,9,14,],[0,-1,-2,]),'ID':([2,6,11,],[3,7,12,]),'EQ':([3,],[4,]),'INT':([4,8,13,],[5,9,14,]),'COLON':([5,10,],[6,11,]),'ASSIGN':([7,12,],[8,13,]),'ELSE':([9,],[10,]),}
+_lr_action_items = {'DEF':([0,],[2,]),'$end':([1,10,],[0,-1,]),'ID':([2,4,9,],[3,5,11,]),'LPAREN':([3,],[4,]),'RPAREN':([4,5,6,7,11,],[-5,-3,8,-4,-2,]),'COMMA':([4,5,6,7,11,],[-5,-3,9,-4,-2,]),'COLON':([8,],[10,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,],[1,]),}
+_lr_goto_items = {'function':([0,],[1,]),'parameter_list':([4,],[6,]),'empty':([4,],[7,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,7 +26,10 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> statement","S'",1,None,None,None),
-  ('statement -> IF ID EQ INT COLON ID ASSIGN INT','statement',8,'p_statement_if','if-else.py',52),
-  ('statement -> IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT','statement',13,'p_statement_if_else','if-else.py',56),
+  ("S' -> function","S'",1,None,None,None),
+  ('function -> DEF ID LPAREN parameter_list RPAREN COLON','function',6,'p_function_definition','func-def.py',47),
+  ('parameter_list -> parameter_list COMMA ID','parameter_list',3,'p_parameter_list','func-def.py',52),
+  ('parameter_list -> ID','parameter_list',1,'p_parameter_list','func-def.py',53),
+  ('parameter_list -> empty','parameter_list',1,'p_parameter_list','func-def.py',54),
+  ('empty -> <empty>','empty',0,'p_empty','func-def.py',58),
 ]
