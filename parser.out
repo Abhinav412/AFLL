@@ -2,125 +2,243 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Grammar
 
-Rule 0     S' -> function
-Rule 1     function -> DEF ID LPAREN parameter_list RPAREN COLON
-Rule 2     parameter_list -> parameter_list COMMA ID
-Rule 3     parameter_list -> ID
-Rule 4     parameter_list -> empty
-Rule 5     empty -> <empty>
+Rule 0     S' -> while_loop
+Rule 1     while_loop -> WHILE ID LT NUMBER COLON
+Rule 2     while_loop -> WHILE ID LT N COLON
+Rule 3     while_loop -> WHILE ID GT NUMBER COLON
+Rule 4     while_loop -> WHILE ID GT N COLON
+Rule 5     while_loop -> WHILE ID EQ NUMBER COLON
+Rule 6     while_loop -> WHILE ID EQ N COLON
+Rule 7     while_loop -> WHILE NUMBER GT ID COLON
+Rule 8     while_loop -> WHILE NUMBER LT ID COLON
 
 Terminals, with rules where they appear
 
-COLON                : 1
-COMMA                : 2
-DEF                  : 1
-ID                   : 1 2 3
-LPAREN               : 1
-RPAREN               : 1
+COLON                : 1 2 3 4 5 6 7 8
+EQ                   : 5 6
+GT                   : 3 4 7
+ID                   : 1 2 3 4 5 6 7 8
+LT                   : 1 2 8
+N                    : 2 4 6
+NUMBER               : 1 3 5 7 8
+WHILE                : 1 2 3 4 5 6 7 8
 error                : 
 
 Nonterminals, with rules where they appear
 
-empty                : 4
-function             : 0
-parameter_list       : 1 2
+while_loop           : 0
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . function
-    (1) function -> . DEF ID LPAREN parameter_list RPAREN COLON
+    (0) S' -> . while_loop
+    (1) while_loop -> . WHILE ID LT NUMBER COLON
+    (2) while_loop -> . WHILE ID LT N COLON
+    (3) while_loop -> . WHILE ID GT NUMBER COLON
+    (4) while_loop -> . WHILE ID GT N COLON
+    (5) while_loop -> . WHILE ID EQ NUMBER COLON
+    (6) while_loop -> . WHILE ID EQ N COLON
+    (7) while_loop -> . WHILE NUMBER GT ID COLON
+    (8) while_loop -> . WHILE NUMBER LT ID COLON
 
-    DEF             shift and go to state 2
+    WHILE           shift and go to state 2
 
-    function                       shift and go to state 1
+    while_loop                     shift and go to state 1
 
 state 1
 
-    (0) S' -> function .
+    (0) S' -> while_loop .
 
 
 
 state 2
 
-    (1) function -> DEF . ID LPAREN parameter_list RPAREN COLON
+    (1) while_loop -> WHILE . ID LT NUMBER COLON
+    (2) while_loop -> WHILE . ID LT N COLON
+    (3) while_loop -> WHILE . ID GT NUMBER COLON
+    (4) while_loop -> WHILE . ID GT N COLON
+    (5) while_loop -> WHILE . ID EQ NUMBER COLON
+    (6) while_loop -> WHILE . ID EQ N COLON
+    (7) while_loop -> WHILE . NUMBER GT ID COLON
+    (8) while_loop -> WHILE . NUMBER LT ID COLON
 
     ID              shift and go to state 3
+    NUMBER          shift and go to state 4
 
 
 state 3
 
-    (1) function -> DEF ID . LPAREN parameter_list RPAREN COLON
+    (1) while_loop -> WHILE ID . LT NUMBER COLON
+    (2) while_loop -> WHILE ID . LT N COLON
+    (3) while_loop -> WHILE ID . GT NUMBER COLON
+    (4) while_loop -> WHILE ID . GT N COLON
+    (5) while_loop -> WHILE ID . EQ NUMBER COLON
+    (6) while_loop -> WHILE ID . EQ N COLON
 
-    LPAREN          shift and go to state 4
+    LT              shift and go to state 5
+    GT              shift and go to state 6
+    EQ              shift and go to state 7
 
 
 state 4
 
-    (1) function -> DEF ID LPAREN . parameter_list RPAREN COLON
-    (2) parameter_list -> . parameter_list COMMA ID
-    (3) parameter_list -> . ID
-    (4) parameter_list -> . empty
-    (5) empty -> .
+    (7) while_loop -> WHILE NUMBER . GT ID COLON
+    (8) while_loop -> WHILE NUMBER . LT ID COLON
 
-    ID              shift and go to state 5
-    RPAREN          reduce using rule 5 (empty -> .)
-    COMMA           reduce using rule 5 (empty -> .)
+    GT              shift and go to state 8
+    LT              shift and go to state 9
 
-    parameter_list                 shift and go to state 6
-    empty                          shift and go to state 7
 
 state 5
 
-    (3) parameter_list -> ID .
+    (1) while_loop -> WHILE ID LT . NUMBER COLON
+    (2) while_loop -> WHILE ID LT . N COLON
 
-    RPAREN          reduce using rule 3 (parameter_list -> ID .)
-    COMMA           reduce using rule 3 (parameter_list -> ID .)
+    NUMBER          shift and go to state 10
+    N               shift and go to state 11
 
 
 state 6
 
-    (1) function -> DEF ID LPAREN parameter_list . RPAREN COLON
-    (2) parameter_list -> parameter_list . COMMA ID
+    (3) while_loop -> WHILE ID GT . NUMBER COLON
+    (4) while_loop -> WHILE ID GT . N COLON
 
-    RPAREN          shift and go to state 8
-    COMMA           shift and go to state 9
+    NUMBER          shift and go to state 12
+    N               shift and go to state 13
 
 
 state 7
 
-    (4) parameter_list -> empty .
+    (5) while_loop -> WHILE ID EQ . NUMBER COLON
+    (6) while_loop -> WHILE ID EQ . N COLON
 
-    RPAREN          reduce using rule 4 (parameter_list -> empty .)
-    COMMA           reduce using rule 4 (parameter_list -> empty .)
+    NUMBER          shift and go to state 14
+    N               shift and go to state 15
 
 
 state 8
 
-    (1) function -> DEF ID LPAREN parameter_list RPAREN . COLON
+    (7) while_loop -> WHILE NUMBER GT . ID COLON
 
-    COLON           shift and go to state 10
+    ID              shift and go to state 16
 
 
 state 9
 
-    (2) parameter_list -> parameter_list COMMA . ID
+    (8) while_loop -> WHILE NUMBER LT . ID COLON
 
-    ID              shift and go to state 11
+    ID              shift and go to state 17
 
 
 state 10
 
-    (1) function -> DEF ID LPAREN parameter_list RPAREN COLON .
+    (1) while_loop -> WHILE ID LT NUMBER . COLON
 
-    $end            reduce using rule 1 (function -> DEF ID LPAREN parameter_list RPAREN COLON .)
+    COLON           shift and go to state 18
 
 
 state 11
 
-    (2) parameter_list -> parameter_list COMMA ID .
+    (2) while_loop -> WHILE ID LT N . COLON
 
-    RPAREN          reduce using rule 2 (parameter_list -> parameter_list COMMA ID .)
-    COMMA           reduce using rule 2 (parameter_list -> parameter_list COMMA ID .)
+    COLON           shift and go to state 19
+
+
+state 12
+
+    (3) while_loop -> WHILE ID GT NUMBER . COLON
+
+    COLON           shift and go to state 20
+
+
+state 13
+
+    (4) while_loop -> WHILE ID GT N . COLON
+
+    COLON           shift and go to state 21
+
+
+state 14
+
+    (5) while_loop -> WHILE ID EQ NUMBER . COLON
+
+    COLON           shift and go to state 22
+
+
+state 15
+
+    (6) while_loop -> WHILE ID EQ N . COLON
+
+    COLON           shift and go to state 23
+
+
+state 16
+
+    (7) while_loop -> WHILE NUMBER GT ID . COLON
+
+    COLON           shift and go to state 24
+
+
+state 17
+
+    (8) while_loop -> WHILE NUMBER LT ID . COLON
+
+    COLON           shift and go to state 25
+
+
+state 18
+
+    (1) while_loop -> WHILE ID LT NUMBER COLON .
+
+    $end            reduce using rule 1 (while_loop -> WHILE ID LT NUMBER COLON .)
+
+
+state 19
+
+    (2) while_loop -> WHILE ID LT N COLON .
+
+    $end            reduce using rule 2 (while_loop -> WHILE ID LT N COLON .)
+
+
+state 20
+
+    (3) while_loop -> WHILE ID GT NUMBER COLON .
+
+    $end            reduce using rule 3 (while_loop -> WHILE ID GT NUMBER COLON .)
+
+
+state 21
+
+    (4) while_loop -> WHILE ID GT N COLON .
+
+    $end            reduce using rule 4 (while_loop -> WHILE ID GT N COLON .)
+
+
+state 22
+
+    (5) while_loop -> WHILE ID EQ NUMBER COLON .
+
+    $end            reduce using rule 5 (while_loop -> WHILE ID EQ NUMBER COLON .)
+
+
+state 23
+
+    (6) while_loop -> WHILE ID EQ N COLON .
+
+    $end            reduce using rule 6 (while_loop -> WHILE ID EQ N COLON .)
+
+
+state 24
+
+    (7) while_loop -> WHILE NUMBER GT ID COLON .
+
+    $end            reduce using rule 7 (while_loop -> WHILE NUMBER GT ID COLON .)
+
+
+state 25
+
+    (8) while_loop -> WHILE NUMBER LT ID COLON .
+
+    $end            reduce using rule 8 (while_loop -> WHILE NUMBER LT ID COLON .)
 
