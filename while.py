@@ -8,7 +8,7 @@ reserved = {
 }
 
 # List of token names
-tokens = ('WHILE', 'ID', 'LT','GT','EQ', 'NUMBER', 'COLON', 'N')
+tokens = ('WHILE', 'ID', 'LT','GT','EQ', 'NUMBER', 'COLON', 'N','TRUE')
 
 # Regular expression rules for simple tokens
 t_WHILE = r'while'
@@ -16,6 +16,7 @@ t_LT = r'<'
 t_GT = r'>'
 t_EQ = r'='
 t_COLON = r':'
+t_TRUE = r'TRUE'
 t_ignore = ' \t\n'
 
 # Regular expression rule for identifiers
@@ -47,7 +48,16 @@ def p_while_loop(p):
                   | WHILE ID EQ NUMBER COLON
                   | WHILE ID EQ N COLON
                   | WHILE NUMBER GT ID COLON
-                  | WHILE NUMBER LT ID COLON'''
+                  | WHILE NUMBER LT ID COLON
+                  | WHILE NUMBER EQ ID COLON
+                  | WHILE N GT ID COLON
+                  | WHILE N LT ID COLON
+                  | WHILE N EQ ID COLON
+                  | while_true'''
+    print("While loop syntax is correct.")
+
+def p_while_true(p):
+    '''while_true : WHILE TRUE COLON'''
     print("While loop syntax is correct.")
 
 def p_error(p):
@@ -70,6 +80,7 @@ while True:
     tok = lexer.token()
     if not tok:
         break
+    print(tok)
 
 # Parse the data
 result = parser.parse(data)

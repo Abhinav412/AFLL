@@ -4,13 +4,15 @@ reserved = {
     'if' : 'IF',
     'else' : 'ELSE'
 }
-tokens = ('ID', 'EQ', 'INT', 'COLON', 'INDENT', 'DEDENT','ASSIGN')+tuple(reserved.values())
+tokens = ('ID', 'EQ', 'INT', 'COLON','GT','LT','ASSIGN')+tuple(reserved.values())
 
 t_IF = r'if'
 t_ELSE = r'else'
 t_EQ = r'=='
 t_COLON = r':'
 t_ASSIGN = r'='
+t_GT = r'>'
+t_LT = r'<'
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
@@ -40,6 +42,7 @@ def lex_analyse(text):
         token = lexer.token()
         if not token:
             break
+        print(token)
 
 text=input()
 lex_analyse(text)
@@ -49,7 +52,21 @@ import ply.yacc as yacc
 def p_statement_if(p):
     'statement : IF ID EQ INT COLON ID ASSIGN INT'
     p[0] = ('if', p[2], p[4], p[6], p[8])
+def p_statement_if_gt(p):
+    'statement : IF ID GT INT COLON ID ASSIGN INT'
+    p[0] = ('if-gt', p[2], p[4], p[6], p[8])
 
+def p_statement_if_lt(p):
+    'statement : IF ID LT INT COLON ID ASSIGN INT'
+    p[0] = ('if-lt', p[2], p[4], p[6], p[8])
+
+def p_statement_if_else_gt(p):
+    'statement : IF ID GT INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT'
+    p[0] = ('if-else-gt', p[2], p[4], p[6], p[8], p[11], p[13])
+
+def p_statement_if_else_lt(p):
+    'statement : IF ID LT INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT'
+    p[0] = ('if-else-lt', p[2], p[4], p[6], p[8], p[11], p[13])
 def p_statement_if_else(p):
     'statement : IF ID EQ INT COLON ID ASSIGN INT ELSE COLON ID ASSIGN INT'
     p[0] = ('if-else', p[2], p[4], p[6], p[8], p[11], p[1])
